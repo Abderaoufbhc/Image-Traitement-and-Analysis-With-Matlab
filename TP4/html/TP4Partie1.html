@@ -1,0 +1,335 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TP4Partie1</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-06"><meta name="DC.source" content="TP4Partie1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%1.2 Etude sous MATLAB</span>
+<span class="comment">%Filtres gradients (a)</span>
+<span class="comment">%X=zeros(256,256,3); %initialize</span>
+<span class="comment">%X(25:231,25:231,1)=211;</span>
+<span class="comment">%X(25:231,25:231,2)=211;</span>
+<span class="comment">%X(25:231,25:231,3)=211;</span>
+X=imread(<span class="string">'cameraman.tif'</span>);
+X = mat2gray(X);
+
+f = im2double(X);
+g1 = [-1 1];
+Y3 = convn(f, g1);
+figure;
+subplot(2,3,1);imshow(X);title(<span class="string">'X'</span>)
+subplot(2,3,2);imshow(mat2gray(abs(Y3)));title(<span class="string">'mat2gray(abs(Y1))'</span>)
+subplot(2,3,3);imshow(mat2gray(Y3));title(<span class="string">'mat2gray(Y1)'</span>)
+<span class="comment">%des conteurs verticaux</span>
+<span class="comment">%il est sensible aux transitions</span>
+
+
+<span class="comment">%Filtres gradients (b)</span>
+f = im2double(X);
+g2 = [1 -1]';
+Y3 = convn(f, g2);
+subplot(2,3,4);imshow(X);title(<span class="string">'X'</span>)
+subplot(2,3,5);imshow(mat2gray(abs(Y3)));title(<span class="string">'mat2gray(abs(Y1))'</span>)
+subplot(2,3,6);imshow(mat2gray(Y3));title(<span class="string">'mat2gray(Y1)'</span>)
+<span class="comment">%des conteurs Horizontaux</span>
+<span class="comment">%il est sensible aux transitions fonc?/clair semble t il</span>
+
+AffichageFiltrage(X,g1)
+AffichageFiltrage(X,g2)
+</pre><img vspace="5" hspace="5" src="TP4Partie1_01.png" alt=""> <img vspace="5" hspace="5" src="TP4Partie1_02.png" alt=""> <img vspace="5" hspace="5" src="TP4Partie1_03.png" alt=""> <pre class="codeinput"><span class="comment">%Filtres de Sobel.</span>
+h3 = [ 1 0 -1 ; 2 0 -2 ; 1 0 -1 ];
+h4 = [ 2 1 0 ; 1 0 -1 ; 0 -1 -2 ];
+h5 = [ 1 2 1 ; 0 0 0 ; -1 -2 -1 ];
+h6 = [ 0 1 2 ; -1 0 1 ; -2 -1 0 ];
+
+<span class="comment">%Filtres de Sobel. (a)</span>
+f = im2double(X);
+Y3 = convn(f, h3);
+figure;
+subplot(4,3,1);imshow(X);title(<span class="string">'(a): X'</span>)
+subplot(4,3,2);imshow(mat2gray(abs(Y3)));title(<span class="string">'(a): mat2gray(abs(Y1))'</span>)
+subplot(4,3,3);imshow(mat2gray(Y3));title(<span class="string">'(a): mat2gray(Y1)'</span>)
+<span class="comment">%des conteurs verticaux</span>
+<span class="comment">%il est sensible aux transitions</span>
+
+<span class="comment">%Filtres de Sobel. (b)</span>
+f = im2double(X);
+Y3 = convn(f, h4);
+subplot(4,3,4);imshow(X);title(<span class="string">'(b): X'</span>)
+subplot(4,3,5);imshow(mat2gray(abs(Y3)));title(<span class="string">'(b): mat2gray(abs(Y1))'</span>)
+subplot(4,3,6);imshow(mat2gray(Y3));title(<span class="string">'(b): mat2gray(Y1)'</span>)
+<span class="comment">%des conteurs Horizontaux et verticaux</span>
+<span class="comment">%il est sensible aux transitions</span>
+
+
+<span class="comment">%Filtres de Sobel. (c)</span>
+f = im2double(X);
+Y3 = convn(f, h5);
+subplot(4,3,7);imshow(X);title(<span class="string">'(c): X'</span>)
+subplot(4,3,8);imshow(mat2gray(abs(Y3)));title(<span class="string">'(c): mat2gray(abs(Y1))'</span>)
+subplot(4,3,9);imshow(mat2gray(Y3));title(<span class="string">'(c): mat2gray(Y1)'</span>)
+<span class="comment">%des conteurs Horizontaux</span>
+<span class="comment">%il est sensible aux transitions clair/fonc? semble t il</span>
+
+
+<span class="comment">%Filtres de Sobel. (d)</span>
+f = im2double(X);
+Y3 = convn(f, h6);
+subplot(4,3,10);imshow(X);title(<span class="string">'(d): X'</span>)
+subplot(4,3,11);imshow(mat2gray(abs(Y3)));title(<span class="string">'(d): mat2gray(abs(Y1))'</span>)
+subplot(4,3,12);imshow(mat2gray(Y3));title(<span class="string">'(d): mat2gray(Y1)'</span>)
+<span class="comment">%des conteurs Horizontaux et verticaux</span>
+<span class="comment">%il est sensible aux transitions</span>
+
+
+AffichageFiltrage(X,h3)
+AffichageFiltrage(X,h4)
+AffichageFiltrage(X,h5)
+AffichageFiltrage(X,h6)
+</pre><img vspace="5" hspace="5" src="TP4Partie1_04.png" alt=""> <img vspace="5" hspace="5" src="TP4Partie1_05.png" alt=""> <img vspace="5" hspace="5" src="TP4Partie1_06.png" alt=""> <img vspace="5" hspace="5" src="TP4Partie1_07.png" alt=""> <img vspace="5" hspace="5" src="TP4Partie1_08.png" alt=""> <pre class="codeinput"><span class="comment">%Filtre laplacien.</span>
+h7 = (1/8)*[ 0 1 0 ; 1 -4 1 ; 0 1 0 ];
+f = im2double(X);
+Y7 = convn(f, h7);
+figure;
+subplot(1,3,1);imshow(X);title(<span class="string">'X'</span>)
+subplot(1,3,2);imshow(mat2gray(abs(Y7)));title(<span class="string">'mat2gray(abs(Y1))'</span>)
+subplot(1,3,3);imshow(mat2gray(Y7));title(<span class="string">'mat2gray(Y1)'</span>)
+<span class="comment">%des conteurs Horizontaux et verticaux</span>
+<span class="comment">%il est sensible aux transitions</span>
+
+AffichageFiltrage(X,h7)
+</pre><img vspace="5" hspace="5" src="TP4Partie1_09.png" alt=""> <img vspace="5" hspace="5" src="TP4Partie1_10.png" alt=""> <pre class="codeinput"><span class="comment">%Filtre LOG.</span>
+X = im2double(X);
+X = imgaussfilt(X, 0.1);
+h8 = fspecial(<span class="string">'log'</span>,[15 15],1); <span class="comment">% Filtre LOG de taille 5 x 5 et d'ecart type 1</span>
+Y7 = convn(X, h8);
+
+AffichageFiltrage(X,h8)
+
+
+figure;
+subplot(3,3,1);imshow(X);title(<span class="string">'X segma=1'</span>)
+subplot(3,3,2);imshow(mat2gray(abs(Y7)));title(<span class="string">'mat2gray(abs(Y1))'</span>)
+subplot(3,3,3);imshow(mat2gray(Y7));title(<span class="string">'mat2gray(Y1)'</span>)
+<span class="comment">%des conteurs Horizontaux et verticaux</span>
+<span class="comment">%il est sensible aux transitions</span>
+
+h8 = fspecial(<span class="string">'log'</span>,[15 15],1.5); <span class="comment">% Filtre LOG de taille 5 x 5 et d'ecart type 1</span>
+Y7 = convn(X, h8);
+subplot(3,3,4);imshow(X);title(<span class="string">'X segma=1.5'</span>)
+subplot(3,3,5);imshow(mat2gray(abs(Y7)));title(<span class="string">'mat2gray(abs(Y1))'</span>)
+subplot(3,3,6);imshow(mat2gray(Y7));title(<span class="string">'mat2gray(Y1)'</span>)
+<span class="comment">%augmenter reussement des contours</span>
+
+h8 = fspecial(<span class="string">'log'</span>,[15 15],0.5); <span class="comment">% Filtre LOG de taille 5 x 5 et d'ecart type 1</span>
+Y7 = convn(X, h8);
+subplot(3,3,7);imshow(X);title(<span class="string">'X segma=0.5'</span>)
+subplot(3,3,8);imshow(mat2gray(abs(Y7)));title(<span class="string">'mat2gray(abs(Y1))'</span>)
+subplot(3,3,9);imshow(mat2gray(Y7));title(<span class="string">'mat2gray(Y1)'</span>)
+<span class="comment">%demenuer reussement des contours</span>
+</pre><img vspace="5" hspace="5" src="TP4Partie1_11.png" alt=""> <img vspace="5" hspace="5" src="TP4Partie1_12.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%%
+%1.2 Etude sous MATLAB
+%Filtres gradients (a)
+%X=zeros(256,256,3); %initialize
+%X(25:231,25:231,1)=211;   
+%X(25:231,25:231,2)=211;   
+%X(25:231,25:231,3)=211;
+X=imread('cameraman.tif');
+X = mat2gray(X);
+
+f = im2double(X);
+g1 = [-1 1];
+Y3 = convn(f, g1);
+figure;
+subplot(2,3,1);imshow(X);title('X')
+subplot(2,3,2);imshow(mat2gray(abs(Y3)));title('mat2gray(abs(Y1))')
+subplot(2,3,3);imshow(mat2gray(Y3));title('mat2gray(Y1)')
+%des conteurs verticaux 
+%il est sensible aux transitions 
+
+
+%Filtres gradients (b)
+f = im2double(X);
+g2 = [1 -1]';
+Y3 = convn(f, g2);
+subplot(2,3,4);imshow(X);title('X')
+subplot(2,3,5);imshow(mat2gray(abs(Y3)));title('mat2gray(abs(Y1))')
+subplot(2,3,6);imshow(mat2gray(Y3));title('mat2gray(Y1)')
+%des conteurs Horizontaux 
+%il est sensible aux transitions fonc?/clair semble t il
+
+AffichageFiltrage(X,g1)
+AffichageFiltrage(X,g2)
+
+%%
+%Filtres de Sobel.
+h3 = [ 1 0 -1 ; 2 0 -2 ; 1 0 -1 ];
+h4 = [ 2 1 0 ; 1 0 -1 ; 0 -1 -2 ];
+h5 = [ 1 2 1 ; 0 0 0 ; -1 -2 -1 ];
+h6 = [ 0 1 2 ; -1 0 1 ; -2 -1 0 ];
+
+%Filtres de Sobel. (a)
+f = im2double(X);
+Y3 = convn(f, h3);
+figure;
+subplot(4,3,1);imshow(X);title('(a): X')
+subplot(4,3,2);imshow(mat2gray(abs(Y3)));title('(a): mat2gray(abs(Y1))')
+subplot(4,3,3);imshow(mat2gray(Y3));title('(a): mat2gray(Y1)')
+%des conteurs verticaux 
+%il est sensible aux transitions 
+
+%Filtres de Sobel. (b)
+f = im2double(X);
+Y3 = convn(f, h4);
+subplot(4,3,4);imshow(X);title('(b): X')
+subplot(4,3,5);imshow(mat2gray(abs(Y3)));title('(b): mat2gray(abs(Y1))')
+subplot(4,3,6);imshow(mat2gray(Y3));title('(b): mat2gray(Y1)')
+%des conteurs Horizontaux et verticaux
+%il est sensible aux transitions
+
+
+%Filtres de Sobel. (c)
+f = im2double(X);
+Y3 = convn(f, h5);
+subplot(4,3,7);imshow(X);title('(c): X')
+subplot(4,3,8);imshow(mat2gray(abs(Y3)));title('(c): mat2gray(abs(Y1))')
+subplot(4,3,9);imshow(mat2gray(Y3));title('(c): mat2gray(Y1)')
+%des conteurs Horizontaux 
+%il est sensible aux transitions clair/fonc? semble t il
+
+
+%Filtres de Sobel. (d)
+f = im2double(X);
+Y3 = convn(f, h6);
+subplot(4,3,10);imshow(X);title('(d): X')
+subplot(4,3,11);imshow(mat2gray(abs(Y3)));title('(d): mat2gray(abs(Y1))')
+subplot(4,3,12);imshow(mat2gray(Y3));title('(d): mat2gray(Y1)')
+%des conteurs Horizontaux et verticaux
+%il est sensible aux transitions
+
+
+AffichageFiltrage(X,h3)
+AffichageFiltrage(X,h4)
+AffichageFiltrage(X,h5)
+AffichageFiltrage(X,h6)
+
+%%
+%Filtre laplacien.
+h7 = (1/8)*[ 0 1 0 ; 1 -4 1 ; 0 1 0 ];
+f = im2double(X);
+Y7 = convn(f, h7);
+figure;
+subplot(1,3,1);imshow(X);title('X')
+subplot(1,3,2);imshow(mat2gray(abs(Y7)));title('mat2gray(abs(Y1))')
+subplot(1,3,3);imshow(mat2gray(Y7));title('mat2gray(Y1)')
+%des conteurs Horizontaux et verticaux
+%il est sensible aux transitions
+
+AffichageFiltrage(X,h7)
+
+
+%%
+%Filtre LOG.
+X = im2double(X);
+X = imgaussfilt(X, 0.1);
+h8 = fspecial('log',[15 15],1); % Filtre LOG de taille 5 x 5 et d'ecart type 1
+Y7 = convn(X, h8);
+
+AffichageFiltrage(X,h8)
+
+
+figure;
+subplot(3,3,1);imshow(X);title('X segma=1')
+subplot(3,3,2);imshow(mat2gray(abs(Y7)));title('mat2gray(abs(Y1))')
+subplot(3,3,3);imshow(mat2gray(Y7));title('mat2gray(Y1)')
+%des conteurs Horizontaux et verticaux
+%il est sensible aux transitions
+
+h8 = fspecial('log',[15 15],1.5); % Filtre LOG de taille 5 x 5 et d'ecart type 1
+Y7 = convn(X, h8);
+subplot(3,3,4);imshow(X);title('X segma=1.5')
+subplot(3,3,5);imshow(mat2gray(abs(Y7)));title('mat2gray(abs(Y1))')
+subplot(3,3,6);imshow(mat2gray(Y7));title('mat2gray(Y1)')
+%augmenter reussement des contours
+
+h8 = fspecial('log',[15 15],0.5); % Filtre LOG de taille 5 x 5 et d'ecart type 1
+Y7 = convn(X, h8);
+subplot(3,3,7);imshow(X);title('X segma=0.5')
+subplot(3,3,8);imshow(mat2gray(abs(Y7)));title('mat2gray(abs(Y1))')
+subplot(3,3,9);imshow(mat2gray(Y7));title('mat2gray(Y1)')
+%demenuer reussement des contours
+
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

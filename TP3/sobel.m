@@ -1,0 +1,14 @@
+I=imread('cameraman.tif');
+J=I;%rgb2gray (I);
+J=double(J)/255.0;
+seuil=0.8;
+H=fspecial('sobel');
+V=-H';
+Gh=filter2(H,J);
+Gv=filter2(V,J);
+G=sqrt(Gh.*Gh + Gv.*Gv);
+Gs1=(G>seuil*4/3);
+figure(1);imshow(Gh);
+figure(2);imshow(Gv);
+figure(3);imshow(G);
+figure(4);imshow(Gs1);

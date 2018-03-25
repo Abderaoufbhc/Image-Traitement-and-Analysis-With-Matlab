@@ -1,0 +1,521 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TP2</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-06"><meta name="DC.source" content="TP2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%images en binaires</span>
+Ibw = imread(<span class="string">'trees_nb.tif'</span>);
+imtool(Ibw)
+imfinfo(<span class="string">'trees_nb.tif'</span>)
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                     Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\...'
+                  FileModDate: '24-Feb-2017 16:27:00'
+                     FileSize: 4746
+                       Format: 'tif'
+                FormatVersion: []
+                        Width: 350
+                       Height: 258
+                     BitDepth: 1
+                    ColorType: 'grayscale'
+              FormatSignature: [73 73 42 0]
+                    ByteOrder: 'little-endian'
+               NewSubFileType: 0
+                BitsPerSample: 1
+                  Compression: 'CCITT 1D'
+    PhotometricInterpretation: 'WhiteIsZero'
+                 StripOffsets: [1&times;12 double]
+              SamplesPerPixel: 1
+                 RowsPerStrip: 23
+              StripByteCounts: [1&times;12 double]
+                  XResolution: 72
+                  YResolution: 72
+               ResolutionUnit: 'Inch'
+                     Colormap: []
+          PlanarConfiguration: 'Chunky'
+                    TileWidth: []
+                   TileLength: []
+                  TileOffsets: []
+               TileByteCounts: []
+                  Orientation: 1
+                    FillOrder: 1
+             GrayResponseUnit: 0.0100
+               MaxSampleValue: 1
+               MinSampleValue: 0
+                 Thresholding: 1
+                       Offset: 4460
+
+</pre><img vspace="5" hspace="5" src="TP2_01.png" alt=""> <pre class="codeinput"><span class="comment">%images en niveaux de gris</span>
+Igs = imread(<span class="string">'lena_gray.tif'</span>);
+imtool(Igs)
+imfinfo(<span class="string">'lena_gray.tif'</span>)
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                     Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\...'
+                  FileModDate: '24-Feb-2017 10:31:58'
+                     FileSize: 285528
+                       Format: 'tif'
+                FormatVersion: []
+                        Width: 512
+                       Height: 512
+                     BitDepth: 8
+                    ColorType: 'grayscale'
+              FormatSignature: [73 73 42 0]
+                    ByteOrder: 'little-endian'
+               NewSubFileType: 0
+                BitsPerSample: 8
+                  Compression: 'Uncompressed'
+    PhotometricInterpretation: 'BlackIsZero'
+                 StripOffsets: 23338
+              SamplesPerPixel: 1
+                 RowsPerStrip: 512
+              StripByteCounts: 262144
+                  XResolution: 86.1245
+                  YResolution: 86.1245
+               ResolutionUnit: 'Inch'
+                     Colormap: []
+          PlanarConfiguration: 'Chunky'
+                    TileWidth: []
+                   TileLength: []
+                  TileOffsets: []
+               TileByteCounts: []
+                  Orientation: 1
+                    FillOrder: 1
+             GrayResponseUnit: 0.0100
+               MaxSampleValue: 255
+               MinSampleValue: 0
+                 Thresholding: 1
+                       Offset: 8
+                     Software: 'Adobe Photoshop CC 2015 (Windows)'
+                     DateTime: '2017:02:24 11:31:53'
+                          XMP: '&lt;?xpacket begin="&#65533;&#65533;&#65533;" id="W5M0MpCehiHzreSz...'
+                    Photoshop: [1&times;8688 double]
+                DigitalCamera: [1&times;1 struct]
+
+</pre><img vspace="5" hspace="5" src="TP2_02.png" alt=""> <pre class="codeinput"><span class="comment">%images en couleurs indexe?es</span>
+[Iind, map] = imread(<span class="string">'lena_color_256.gif'</span>);
+imtool(Iind, map)
+imfinfo(<span class="string">'lena_color_256.gif'</span>)
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+           Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\TIM\TP2\le...'
+        FileModDate: '24-Feb-2017 17:09:38'
+           FileSize: 227335
+             Format: 'GIF'
+      FormatVersion: '87a'
+               Left: 1
+                Top: 1
+              Width: 512
+             Height: 512
+           BitDepth: 8
+          ColorType: 'indexed'
+    FormatSignature: 'GIF87a'
+    BackgroundColor: 1
+        AspectRatio: 0
+         ColorTable: [256&times;3 double]
+         Interlaced: 'no'
+
+</pre><img vspace="5" hspace="5" src="TP2_03.png" alt=""> <pre class="codeinput"><span class="comment">%images en couleurs index?es 16 couleurs (8bit)</span>
+[Iind16, map] = imread(<span class="string">'lena_color_16.tif'</span>);
+imtool(Iind16, map)
+imfinfo(<span class="string">'lena_color_16.tif'</span>)
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                     Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\...'
+                  FileModDate: '24-Feb-2017 17:35:00'
+                     FileSize: 288396
+                       Format: 'tif'
+                FormatVersion: []
+                        Width: 512
+                       Height: 512
+                     BitDepth: 8
+                    ColorType: 'indexed'
+              FormatSignature: [73 73 42 0]
+                    ByteOrder: 'little-endian'
+               NewSubFileType: 0
+                BitsPerSample: 8
+                  Compression: 'Uncompressed'
+    PhotometricInterpretation: 'RGB Palette'
+                 StripOffsets: 26208
+              SamplesPerPixel: 1
+                 RowsPerStrip: 512
+              StripByteCounts: 262144
+                  XResolution: 72
+                  YResolution: 72
+               ResolutionUnit: 'Inch'
+                     Colormap: [256&times;3 double]
+          PlanarConfiguration: 'Chunky'
+                    TileWidth: []
+                   TileLength: []
+                  TileOffsets: []
+               TileByteCounts: []
+                  Orientation: 1
+                    FillOrder: 1
+             GrayResponseUnit: 0.0100
+               MaxSampleValue: 255
+               MinSampleValue: 0
+                 Thresholding: 1
+                       Offset: 8
+                     Software: 'Adobe Photoshop CC 2015 (Windows)'
+                     DateTime: '2017:02:24 18:34:51'
+                          XMP: '&lt;?xpacket begin="&#65533;&#65533;&#65533;" id="W5M0MpCehiHzreSz...'
+                    Photoshop: [1&times;10112 double]
+                DigitalCamera: [1&times;1 struct]
+
+</pre><img vspace="5" hspace="5" src="TP2_04.png" alt=""> <pre class="codeinput"><span class="comment">%images en couleurs index?es 16 (4bit)</span>
+[Iind16_4, map] = imread(<span class="string">'lena_color_16.bmp'</span>);
+imtool(Iind16_4, map)
+imfinfo(<span class="string">'lena_color_16.bmp'</span>)
+<span class="comment">%je ne vois pas une grande diff?rence</span>
+<span class="comment">% concernant l'affichage sauf que</span>
+<span class="comment">%la taille est presque la moit?e</span>
+<span class="comment">%des differences dans les propriet?s</span>
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+              Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\TIM\TP2...'
+           FileModDate: '24-Feb-2017 18:39:22'
+              FileSize: 131192
+                Format: 'bmp'
+         FormatVersion: 'Version 3 (Microsoft Windows 3.x)'
+                 Width: 512
+                Height: 512
+              BitDepth: 4
+             ColorType: 'indexed'
+       FormatSignature: 'BM'
+    NumColormapEntries: 16
+              Colormap: [16&times;3 double]
+               RedMask: []
+             GreenMask: []
+              BlueMask: []
+       ImageDataOffset: 118
+      BitmapHeaderSize: 40
+             NumPlanes: 1
+       CompressionType: 'none'
+            BitmapSize: 131074
+        HorzResolution: 2834
+        VertResolution: 2834
+         NumColorsUsed: 0
+    NumImportantColors: 0
+
+</pre><img vspace="5" hspace="5" src="TP2_05.png" alt=""> <pre class="codeinput"><span class="comment">%image en vraie couleurs</span>
+Irvb = imread(<span class="string">'lena_color_24.tif'</span>);
+imtool(Irvb)
+imfinfo(<span class="string">'lena_color_24.tif'</span>)
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                     Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\...'
+                  FileModDate: '24-Feb-2017 13:09:38'
+                     FileSize: 786572
+                       Format: 'tif'
+                FormatVersion: []
+                        Width: 512
+                       Height: 512
+                     BitDepth: 24
+                    ColorType: 'truecolor'
+              FormatSignature: [77 77 0 42]
+                    ByteOrder: 'big-endian'
+               NewSubFileType: 0
+                BitsPerSample: [8 8 8]
+                  Compression: 'Uncompressed'
+    PhotometricInterpretation: 'RGB'
+                 StripOffsets: 8
+              SamplesPerPixel: 3
+                 RowsPerStrip: 4.2950e+09
+              StripByteCounts: 786432
+                  XResolution: []
+                  YResolution: []
+               ResolutionUnit: 'Inch'
+                     Colormap: []
+          PlanarConfiguration: 'Chunky'
+                    TileWidth: []
+                   TileLength: []
+                  TileOffsets: []
+               TileByteCounts: []
+                  Orientation: 1
+                    FillOrder: 1
+             GrayResponseUnit: 0.0100
+               MaxSampleValue: [255 255 255]
+               MinSampleValue: [0 0 0]
+                 Thresholding: 1
+                       Offset: 786440
+
+</pre><img vspace="5" hspace="5" src="TP2_06.png" alt=""> <pre class="codeinput"><span class="comment">%image en vraie couleurs par couche</span>
+figure, imshow(Irvb(:,:,1))<span class="comment">%R</span>
+figure, imshow(Irvb(:,:,2))<span class="comment">%V</span>
+figure, imshow(Irvb(:,:,3))<span class="comment">%B</span>
+figure, imshow(Irvb(:,:,:))<span class="comment">%RVB</span>
+</pre><img vspace="5" hspace="5" src="TP2_07.png" alt=""> <img vspace="5" hspace="5" src="TP2_08.png" alt=""> <img vspace="5" hspace="5" src="TP2_09.png" alt=""> <img vspace="5" hspace="5" src="TP2_10.png" alt=""> <pre class="codeinput"><span class="comment">%image vrais couleurs en niveaux de gris</span>
+I24gray = imread(<span class="string">'lena_gray_24.bmp'</span>);
+imtool(I24gray)
+imfinfo(<span class="string">'lena_gray_24.bmp'</span>)
+<span class="comment">%toutes les pixels ont des valeurs fixes de R V et B</span>
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+              Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\TIM\TP2...'
+           FileModDate: '24-Feb-2017 18:30:14'
+              FileSize: 786488
+                Format: 'bmp'
+         FormatVersion: 'Version 3 (Microsoft Windows 3.x)'
+                 Width: 512
+                Height: 512
+              BitDepth: 24
+             ColorType: 'truecolor'
+       FormatSignature: 'BM'
+    NumColormapEntries: 0
+              Colormap: []
+               RedMask: []
+             GreenMask: []
+              BlueMask: []
+       ImageDataOffset: 54
+      BitmapHeaderSize: 40
+             NumPlanes: 1
+       CompressionType: 'none'
+            BitmapSize: 786434
+        HorzResolution: 3390
+        VertResolution: 3390
+         NumColorsUsed: 0
+    NumImportantColors: 0
+
+</pre><img vspace="5" hspace="5" src="TP2_11.png" alt=""> <pre class="codeinput"><span class="comment">%image vrais couleurs en niveaux de gris</span>
+I = imread(<span class="string">'coins.png'</span>);
+BW = imbinarize(I);
+figure,imshowpair(I,BW,<span class="string">'montage'</span>)
+</pre><img vspace="5" hspace="5" src="TP2_12.png" alt=""> <pre class="codeinput"><span class="comment">%Binarize Image Using Locally Adaptative Thresholding</span>
+I = imread(<span class="string">'rice.png'</span>);
+BW = imbinarize(I,<span class="string">'adaptive'</span>);
+figure,imshowpair(I,BW,<span class="string">'montage'</span>)
+</pre><img vspace="5" hspace="5" src="TP2_13.png" alt=""> <pre class="codeinput"><span class="comment">%convertir une image de couleur index?s en niveaux de noir et blanc</span>
+load <span class="string">trees</span>
+BW = im2bw(X,map,0.4);<span class="comment">%c'est mieux d'utiliser imbinarize</span>
+imshow(X,map),figure,imshow(BW)
+</pre><img vspace="5" hspace="5" src="TP2_14.png" alt=""> <img vspace="5" hspace="5" src="TP2_15.png" alt=""> <pre class="codeinput"><span class="comment">%Binarize Images with Darker Foreground Than Background</span>
+I = imread(<span class="string">'printedtext.png'</span>);
+figure,imshow(I)
+title(<span class="string">'Original Image'</span>)
+BW = imbinarize(I,<span class="string">'adaptive'</span>,<span class="string">'ForegroundPolarity'</span>,<span class="string">'dark'</span>,<span class="string">'Sensitivity'</span>,0.4);
+figure,imshow(BW)
+title(<span class="string">'binary version of the image'</span>)
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 50% 
+Warning: Image is too big to fit on screen; displaying at 50% 
+</pre><img vspace="5" hspace="5" src="TP2_16.png" alt=""> <img vspace="5" hspace="5" src="TP2_17.png" alt=""> <pre class="codeinput"><span class="comment">%convert a grayscale image into an indexed image and then view the result.</span>
+I = imread(<span class="string">'cameraman.tif'</span>);
+[X,map] = gray2ind(I, 256);
+imtool(X, map);
+figure, imshowpair(I,X,<span class="string">'montage'</span>)
+<span class="comment">%pour les valeurs de 2 4 16 50 256</span>
+<span class="comment">%on remarque amelioration de la qualit? de l'image</span>
+</pre><img vspace="5" hspace="5" src="TP2_18.png" alt=""> <img vspace="5" hspace="5" src="TP2_19.png" alt=""> <pre class="codeinput"><span class="comment">%convertir une image rgb (vraies couleurs) en couleurs indexes</span>
+RGB = imread(<span class="string">'ngc6543a.jpg'</span>);
+figure(<span class="string">'Name'</span>,<span class="string">'RGB Image'</span>)
+imagesc(RGB)
+axis <span class="string">image</span>
+zoom(4)
+<span class="comment">%convert rgb to an indexed image with 32 colors</span>
+[IND,map] = rgb2ind(RGB,32);
+figure(<span class="string">'Name'</span>,<span class="string">'indexed image with 32 colors'</span>)
+imagesc(IND)
+colormap(map)
+axis <span class="string">image</span>
+zoom(4)
+</pre><img vspace="5" hspace="5" src="TP2_20.png" alt=""> <img vspace="5" hspace="5" src="TP2_21.png" alt=""> <pre class="codeinput"><span class="comment">%ind2gray convertir une image index? en une image en niveaux de gris</span>
+load <span class="string">trees</span>
+I = ind2gray(X,map);
+imshow(X,map)
+figure,imshow(I)
+</pre><img vspace="5" hspace="5" src="TP2_22.png" alt=""> <img vspace="5" hspace="5" src="TP2_23.png" alt=""> <pre class="codeinput">[I,map]=imread(<span class="string">'autumn.tif'</span>);
+imshow(I);
+<span class="comment">%RGB = ind2rgb(I,map);</span>
+figure, imshow(X,map);
+</pre><img vspace="5" hspace="5" src="TP2_24.png" alt=""> <img vspace="5" hspace="5" src="TP2_25.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%%
+%images en binaires
+Ibw = imread('trees_nb.tif');
+imtool(Ibw)
+imfinfo('trees_nb.tif')
+%%
+%images en niveaux de gris
+Igs = imread('lena_gray.tif');
+imtool(Igs)
+imfinfo('lena_gray.tif')
+%%
+%images en couleurs indexe?es
+[Iind, map] = imread('lena_color_256.gif');
+imtool(Iind, map)
+imfinfo('lena_color_256.gif')
+%%
+%images en couleurs index?es 16 couleurs (8bit)
+[Iind16, map] = imread('lena_color_16.tif');
+imtool(Iind16, map)
+imfinfo('lena_color_16.tif')
+%%
+%images en couleurs index?es 16 (4bit)
+[Iind16_4, map] = imread('lena_color_16.bmp');
+imtool(Iind16_4, map)
+imfinfo('lena_color_16.bmp')
+%je ne vois pas une grande diff?rence 
+% concernant l'affichage sauf que 
+%la taille est presque la moit?e 
+%des differences dans les propriet?s
+%%
+%image en vraie couleurs
+Irvb = imread('lena_color_24.tif');
+imtool(Irvb)
+imfinfo('lena_color_24.tif')
+%%
+%image en vraie couleurs par couche
+figure, imshow(Irvb(:,:,1))%R
+figure, imshow(Irvb(:,:,2))%V
+figure, imshow(Irvb(:,:,3))%B
+figure, imshow(Irvb(:,:,:))%RVB
+%%
+%image vrais couleurs en niveaux de gris
+I24gray = imread('lena_gray_24.bmp');
+imtool(I24gray)
+imfinfo('lena_gray_24.bmp')
+%toutes les pixels ont des valeurs fixes de R V et B
+%%
+%image vrais couleurs en niveaux de gris
+I = imread('coins.png');
+BW = imbinarize(I);
+figure,imshowpair(I,BW,'montage')
+%%
+%Binarize Image Using Locally Adaptative Thresholding
+I = imread('rice.png');
+BW = imbinarize(I,'adaptive');
+figure,imshowpair(I,BW,'montage')
+%%
+%convertir une image de couleur index?s en niveaux de noir et blanc
+load trees
+BW = im2bw(X,map,0.4);%c'est mieux d'utiliser imbinarize
+imshow(X,map),figure,imshow(BW)
+%%
+%Binarize Images with Darker Foreground Than Background
+I = imread('printedtext.png');
+figure,imshow(I)
+title('Original Image')
+BW = imbinarize(I,'adaptive','ForegroundPolarity','dark','Sensitivity',0.4);
+figure,imshow(BW)
+title('binary version of the image')
+%%
+%convert a grayscale image into an indexed image and then view the result.
+I = imread('cameraman.tif');
+[X,map] = gray2ind(I, 256);
+imtool(X, map);
+figure, imshowpair(I,X,'montage')
+%pour les valeurs de 2 4 16 50 256
+%on remarque amelioration de la qualit? de l'image
+%%
+%convertir une image rgb (vraies couleurs) en couleurs indexes
+RGB = imread('ngc6543a.jpg');
+figure('Name','RGB Image')
+imagesc(RGB)
+axis image
+zoom(4)
+%convert rgb to an indexed image with 32 colors
+[IND,map] = rgb2ind(RGB,32);
+figure('Name','indexed image with 32 colors')
+imagesc(IND)
+colormap(map)
+axis image
+zoom(4)
+%%
+%ind2gray convertir une image index? en une image en niveaux de gris
+load trees
+I = ind2gray(X,map);
+imshow(X,map)
+figure,imshow(I)
+%%
+%
+[I,map]=imread('autumn.tif');
+imshow(I);
+%RGB = ind2rgb(I,map);
+figure, imshow(X,map);
+
+
+##### SOURCE END #####
+--></body></html>

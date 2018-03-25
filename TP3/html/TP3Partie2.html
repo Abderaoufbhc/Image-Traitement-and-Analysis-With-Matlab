@@ -1,0 +1,503 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TP3Partie2</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-06"><meta name="DC.source" content="TP3Partie2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">filtre lineaire</a></li><li><a href="#3">filtre non lineaire</a></li></ul></div><pre class="codeinput">X1=imread(<span class="string">'cameraman.tif'</span>);
+X1 = im2double(X1);
+X2= imnoise(X1,<span class="string">'gaussian'</span>,0.01); <span class="comment">% bruit blanc Gaussien</span>
+X3=imnoise(X1,<span class="string">'salt &amp; pepper'</span>,0.05); <span class="comment">% un bruit sel et poivre</span>
+</pre><h2 id="2">filtre lineaire</h2><pre class="codeinput">h = fspecial(<span class="string">'average'</span>,[3 3]);
+
+Y2=imfilter(X2,h,<span class="string">'replicate'</span>); <span class="comment">% un filtre moyenneur de taille 3 ? 3</span>
+subplot(1,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(1,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(1,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur'</span>);
+AffichageFiltrage(X1,h);
+<span class="comment">%PSNR=-10*log10(std2(X1-Y2))</span>
+</pre><img vspace="5" hspace="5" src="TP3Partie2_01.png" alt=""> <img vspace="5" hspace="5" src="TP3Partie2_02.png" alt=""> <h2 id="3">filtre non lineaire</h2><pre class="codeinput">Y3=medfilt2(X3,[3,3]);     <span class="comment">% filtre m?dian</span>
+subplot(1,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(1,3,2); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(1,3,3),imshow(Y3); title(<span class="string">'filtre m?dian'</span>);
+
+<span class="comment">% PSNR pour ?valuer les m?thodes de compression et de d?bruitage d?images</span>
+<span class="comment">%PSNR=-10*log10(std2(X1-Y3))</span>
+</pre><img vspace="5" hspace="5" src="TP3Partie2_03.png" alt=""> <pre class="codeinput"><span class="comment">%un filtre moyenneur de taille 3 ? 3</span>
+h = fspecial(<span class="string">'average'</span>,[3 3]);
+Y2=imfilter(X2,h,<span class="string">'replicate'</span>);
+Y3=imfilter(X3,h,<span class="string">'replicate'</span>);
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">% -9.6009</span>
+PSNR=-10*log10(std2(X1-Y3)) <span class="comment">% -10.3173</span>
+
+AffichageFiltrage(X1,h);
+</pre><pre class="codeoutput">
+PSNR =
+
+   12.1855
+
+
+PSNR =
+
+   11.7052
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_04.png" alt=""> <img vspace="5" hspace="5" src="TP3Partie2_05.png" alt=""> <pre class="codeinput"><span class="comment">%un filtre moyenneur de taille 5 ? 5</span>
+Y2=imfilter(X2,h,<span class="string">'replicate'</span>);
+Y3=imfilter(X3,h,<span class="string">'replicate'</span>);
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">%  -9.6113</span>
+PSNR=-10*log10(std2(X1-Y3)) <span class="comment">% -10.3236</span>
+</pre><pre class="codeoutput">
+PSNR =
+
+   12.1855
+
+
+PSNR =
+
+   11.7052
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_06.png" alt=""> <pre class="codeinput"><span class="comment">%un filtre moyenneur de taille 7 ? 7</span>
+h = fspecial(<span class="string">'average'</span>,[7 7]);
+Y2=imfilter(X2,h,<span class="string">'replicate'</span>);
+Y3=imfilter(X3,h,<span class="string">'replicate'</span>);
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">%  -11.4248</span>
+PSNR=-10*log10(std2(X1-Y3)) <span class="comment">% -11.5818</span>
+
+AffichageFiltrage(X1,h)
+</pre><pre class="codeoutput">
+PSNR =
+
+   10.7514
+
+
+PSNR =
+
+   10.6700
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_07.png" alt=""> <img vspace="5" hspace="5" src="TP3Partie2_08.png" alt=""> <pre class="codeinput"><span class="comment">%Filtre Gaussien de taille 15 ? 15 v= 2</span>
+h = fspecial(<span class="string">'gaussian'</span>,[15 15],2);
+Y2=imfilter(X2,h,<span class="string">'replicate'</span>);
+Y3=imfilter(X3,h,<span class="string">'replicate'</span>);
+
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">% -11.0206</span>
+PSNR=-10*log10(std2(X1-Y3))<span class="comment">% -11.2019</span>
+
+AffichageFiltrage(X1,h)
+</pre><pre class="codeoutput">
+PSNR =
+
+   11.1530
+
+
+PSNR =
+
+   11.0359
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_09.png" alt=""> <img vspace="5" hspace="5" src="TP3Partie2_10.png" alt=""> <pre class="codeinput"><span class="comment">%Filtre Gaussien de taille 15 ? 15 v = 1.5</span>
+h = fspecial(<span class="string">'gaussian'</span>,[15 15],1.5);
+Y2=imfilter(X2,h,<span class="string">'replicate'</span>);
+Y3=imfilter(X3,h,<span class="string">'replicate'</span>);
+
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">% -10.4297</span>
+PSNR=-10*log10(std2(X1-Y3))<span class="comment">% -10.7060</span>
+
+AffichageFiltrage(X1,h);
+</pre><pre class="codeoutput">
+PSNR =
+
+   11.6725
+
+
+PSNR =
+
+   11.4790
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_11.png" alt=""> <img vspace="5" hspace="5" src="TP3Partie2_12.png" alt=""> <pre class="codeinput"><span class="comment">%Filtre Gaussien de taille 15 ? 15   v= 1</span>
+h = fspecial(<span class="string">'gaussian'</span>,[15 15],1);
+Y2=imfilter(X2,h,<span class="string">'replicate'</span>);
+Y3=imfilter(X3,h,<span class="string">'replicate'</span>);
+
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">% -9.4668</span>
+PSNR=-10*log10(std2(X1-Y3))<span class="comment">% -10.1056</span>
+
+AffichageFiltrage(X1,h);
+</pre><pre class="codeoutput">
+PSNR =
+
+   12.3878
+
+
+PSNR =
+
+   11.9625
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_13.png" alt=""> <img vspace="5" hspace="5" src="TP3Partie2_14.png" alt=""> <pre class="codeinput"><span class="comment">%Filtre Gaussien de taille 15 ? 15   v=0.5</span>
+h = fspecial(<span class="string">'gaussian'</span>,[15 15],0.5);
+Y2=imfilter(X2,h,<span class="string">'replicate'</span>);
+Y3=imfilter(X3,h,<span class="string">'replicate'</span>);
+
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">% -9.3168</span>
+PSNR=-10*log10(std2(X1-Y3))<span class="comment">% -11.3906</span>
+
+AffichageFiltrage(X1,h);
+</pre><pre class="codeoutput">
+PSNR =
+
+   11.8754
+
+
+PSNR =
+
+   10.7729
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_15.png" alt=""> <img vspace="5" hspace="5" src="TP3Partie2_16.png" alt=""> <pre class="codeinput"><span class="comment">%Filtre median :</span>
+Y2=medfilt2(X2,[3,3]);
+Y3=medfilt2(X3,[3,3]);
+
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">% -9.9435</span>
+PSNR=-10*log10(std2(X1-Y3))<span class="comment">% -9.6729</span>
+
+AffichageFiltrage(X1,h);
+</pre><pre class="codeoutput">
+PSNR =
+
+   12.0684
+
+
+PSNR =
+
+   13.3690
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_17.png" alt=""> <img vspace="5" hspace="5" src="TP3Partie2_18.png" alt=""> <pre class="codeinput"><span class="comment">%Filtre median :</span>
+Y2=medfilt2(X2,[5,5]);
+Y3=medfilt2(X3,[5,5]);
+
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">% -11.0209</span>
+PSNR=-10*log10(std2(X1-Y3))<span class="comment">%-11.1892</span>
+
+AffichageFiltrage(X1,h);
+</pre><pre class="codeoutput">
+PSNR =
+
+   11.4891
+
+
+PSNR =
+
+   11.8258
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_19.png" alt=""> <img vspace="5" hspace="5" src="TP3Partie2_20.png" alt=""> <pre class="codeinput"><span class="comment">%Filtre median :</span>
+Y2=medfilt2(X2,[7,7]);
+Y3=medfilt2(X3,[7,7]);
+
+subplot(2,3,1);imshow(X1);title(<span class="string">'Image original'</span>);
+subplot(2,3,2); imshow(X2); title(<span class="string">'un bruit blanc Gaussien'</span>);
+subplot(2,3,3),imshow(Y2); title(<span class="string">'filtre moyenneur X2'</span>);
+subplot(2,3,4); imshow(X3); title(<span class="string">'un bruit poivre et sel'</span>);
+subplot(2,3,5),imshow(Y3); title(<span class="string">'filtre moyenneur X3'</span>);
+
+PSNR=-10*log10(std2(X1-Y2))<span class="comment">%-11.6762</span>
+PSNR=-10*log10(std2(X1-Y3))<span class="comment">% -11.8415</span>
+</pre><pre class="codeoutput">
+PSNR =
+
+   10.9489
+
+
+PSNR =
+
+   11.1580
+
+</pre><img vspace="5" hspace="5" src="TP3Partie2_21.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+X1=imread('cameraman.tif');
+X1 = im2double(X1);
+X2= imnoise(X1,'gaussian',0.01); % bruit blanc Gaussien
+X3=imnoise(X1,'salt & pepper',0.05); % un bruit sel et poivre
+%% filtre lineaire
+h = fspecial('average',[3 3]);
+
+Y2=imfilter(X2,h,'replicate'); % un filtre moyenneur de taille 3 ? 3
+subplot(1,3,1);imshow(X1);title('Image original');
+subplot(1,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(1,3,3),imshow(Y2); title('filtre moyenneur');
+AffichageFiltrage(X1,h);
+%PSNR=-10*log10(std2(X1-Y2))
+
+%% filtre non lineaire
+Y3=medfilt2(X3,[3,3]);     % filtre m?dian
+subplot(1,3,1);imshow(X1);title('Image original');
+subplot(1,3,2); imshow(X3); title('un bruit poivre et sel');
+subplot(1,3,3),imshow(Y3); title('filtre m?dian');
+
+% PSNR pour ?valuer les m?thodes de compression et de d?bruitage d?images
+%PSNR=-10*log10(std2(X1-Y3))
+%%
+%un filtre moyenneur de taille 3 ? 3
+h = fspecial('average',[3 3]);
+Y2=imfilter(X2,h,'replicate');
+Y3=imfilter(X3,h,'replicate');
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))% -9.6009
+PSNR=-10*log10(std2(X1-Y3)) % -10.3173
+
+AffichageFiltrage(X1,h);
+%%
+%un filtre moyenneur de taille 5 ? 5
+Y2=imfilter(X2,h,'replicate');
+Y3=imfilter(X3,h,'replicate');
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))%  -9.6113
+PSNR=-10*log10(std2(X1-Y3)) % -10.3236
+
+%%
+%un filtre moyenneur de taille 7 ? 7
+h = fspecial('average',[7 7]);
+Y2=imfilter(X2,h,'replicate');
+Y3=imfilter(X3,h,'replicate');
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))%  -11.4248
+PSNR=-10*log10(std2(X1-Y3)) % -11.5818
+
+AffichageFiltrage(X1,h)
+%%
+%Filtre Gaussien de taille 15 ? 15 v= 2
+h = fspecial('gaussian',[15 15],2);
+Y2=imfilter(X2,h,'replicate');
+Y3=imfilter(X3,h,'replicate');
+
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))% -11.0206
+PSNR=-10*log10(std2(X1-Y3))% -11.2019
+
+AffichageFiltrage(X1,h)
+%%
+%Filtre Gaussien de taille 15 ? 15 v = 1.5
+h = fspecial('gaussian',[15 15],1.5);
+Y2=imfilter(X2,h,'replicate');
+Y3=imfilter(X3,h,'replicate');
+
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))% -10.4297
+PSNR=-10*log10(std2(X1-Y3))% -10.7060
+
+AffichageFiltrage(X1,h);
+%%
+%Filtre Gaussien de taille 15 ? 15   v= 1
+h = fspecial('gaussian',[15 15],1);
+Y2=imfilter(X2,h,'replicate');
+Y3=imfilter(X3,h,'replicate');
+
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))% -9.4668
+PSNR=-10*log10(std2(X1-Y3))% -10.1056
+
+AffichageFiltrage(X1,h);
+%%
+%Filtre Gaussien de taille 15 ? 15   v=0.5
+h = fspecial('gaussian',[15 15],0.5);
+Y2=imfilter(X2,h,'replicate');
+Y3=imfilter(X3,h,'replicate');
+
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))% -9.3168
+PSNR=-10*log10(std2(X1-Y3))% -11.3906
+
+AffichageFiltrage(X1,h);
+%%
+%Filtre median :
+Y2=medfilt2(X2,[3,3]);
+Y3=medfilt2(X3,[3,3]);
+
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))% -9.9435
+PSNR=-10*log10(std2(X1-Y3))% -9.6729
+
+AffichageFiltrage(X1,h);
+%%
+%Filtre median :
+Y2=medfilt2(X2,[5,5]);
+Y3=medfilt2(X3,[5,5]);
+
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))% -11.0209
+PSNR=-10*log10(std2(X1-Y3))%-11.1892
+
+AffichageFiltrage(X1,h);
+%%
+%Filtre median :
+Y2=medfilt2(X2,[7,7]);
+Y3=medfilt2(X3,[7,7]);
+
+subplot(2,3,1);imshow(X1);title('Image original');
+subplot(2,3,2); imshow(X2); title('un bruit blanc Gaussien');
+subplot(2,3,3),imshow(Y2); title('filtre moyenneur X2');
+subplot(2,3,4); imshow(X3); title('un bruit poivre et sel');
+subplot(2,3,5),imshow(Y3); title('filtre moyenneur X3');
+
+PSNR=-10*log10(std2(X1-Y2))%-11.6762
+PSNR=-10*log10(std2(X1-Y3))% -11.8415
+
+##### SOURCE END #####
+--></body></html>

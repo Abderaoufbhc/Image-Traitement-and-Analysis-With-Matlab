@@ -1,0 +1,666 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>TP1</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-05-06"><meta name="DC.source" content="TP1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%Charger une image dans la variable I</span>
+I = imread(<span class="string">'pout.tif'</span>);
+</pre><pre class="codeinput"><span class="comment">%Afficher des informations m?moire concernant la variable I</span>
+whos <span class="string">I</span>
+</pre><pre class="codeoutput">  Name        Size             Bytes  Class    Attributes
+
+  I         291x240            69840  uint8              
+
+</pre><pre class="codeinput"><span class="comment">%afficher l'image avec imshow</span>
+imshow(I)
+</pre><img vspace="5" hspace="5" src="TP1_01.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'image avec imtools</span>
+imtool(I)
+</pre><img vspace="5" hspace="5" src="TP1_02.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'histogramme des niveaux de gris de l'image originale</span>
+figure, imhist(I)
+</pre><img vspace="5" hspace="5" src="TP1_03.png" alt=""> <pre class="codeinput"><span class="comment">%Calculer l'histogramme ?galis? et l'afficher</span>
+I2 = histeq(I);
+figure,imshow(I2)
+</pre><img vspace="5" hspace="5" src="TP1_04.png" alt=""> <pre class="codeinput"><span class="comment">%afficher la nouvelle image dont l'histogramme a ?t? ?galis?</span>
+figure,imhist(I2)
+</pre><img vspace="5" hspace="5" src="TP1_05.png" alt=""> <pre class="codeinput"><span class="comment">%ecrire l'image dans un fichier externe</span>
+imwrite(I2, <span class="string">'pout2.png'</span>)
+</pre><pre class="codeinput"><span class="comment">%afficher les informations concernant l'image</span>
+imfinfo(<span class="string">'pout2.png'</span>)
+
+<span class="comment">%image rice.png</span>
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                  Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\TIM...'
+               FileModDate: '06-May-2017 05:34:07'
+                  FileSize: 36938
+                    Format: 'png'
+             FormatVersion: []
+                     Width: 240
+                    Height: 291
+                  BitDepth: 8
+                 ColorType: 'grayscale'
+           FormatSignature: [137 80 78 71 13 10 26 10]
+                  Colormap: []
+                 Histogram: []
+             InterlaceType: 'none'
+              Transparency: 'none'
+    SimpleTransparencyData: []
+           BackgroundColor: []
+           RenderingIntent: []
+            Chromaticities: []
+                     Gamma: []
+               XResolution: []
+               YResolution: []
+            ResolutionUnit: []
+                   XOffset: []
+                   YOffset: []
+                OffsetUnit: []
+           SignificantBits: []
+              ImageModTime: '6 May 2017 04:34:07 +0000'
+                     Title: []
+                    Author: []
+               Description: []
+                 Copyright: []
+              CreationTime: []
+                  Software: []
+                Disclaimer: []
+                   Warning: []
+                    Source: []
+                   Comment: []
+                 OtherText: []
+
+</pre><pre class="codeinput"><span class="comment">%Charger une image dans la variable I</span>
+I = imread(<span class="string">'rice.png'</span>);
+</pre><pre class="codeinput"><span class="comment">%Afficher des informations m?moire concernant la variable I</span>
+whos <span class="string">I</span>
+</pre><pre class="codeoutput">  Name        Size             Bytes  Class    Attributes
+
+  I         256x256            65536  uint8              
+
+</pre><pre class="codeinput"><span class="comment">%afficher l'image avec imshow</span>
+imshow(I)
+</pre><img vspace="5" hspace="5" src="TP1_06.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'image avec imtools</span>
+imtool(I)
+</pre><img vspace="5" hspace="5" src="TP1_07.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'histogramme des niveaux de gris de l'image originale</span>
+figure, imhist(I)
+</pre><img vspace="5" hspace="5" src="TP1_08.png" alt=""> <pre class="codeinput"><span class="comment">%Calculer l'histogramme ?galis? et l'afficher</span>
+I2 = histeq(I);
+figure,imshow(I2)
+</pre><img vspace="5" hspace="5" src="TP1_09.png" alt=""> <pre class="codeinput"><span class="comment">%afficher la nouvelle image dont l'histogramme a ?t? ?galis?</span>
+figure,imhist(I2)
+</pre><img vspace="5" hspace="5" src="TP1_10.png" alt=""> <pre class="codeinput"><span class="comment">%ecrire l'image dans un fichier externe</span>
+imwrite(I2, <span class="string">'rice2.tif'</span>)
+</pre><pre class="codeinput"><span class="comment">%afficher les informations concernant l'image</span>
+imfinfo(<span class="string">'rice2.tif'</span>)
+
+<span class="comment">%image cameraman.tif</span>
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                     Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\...'
+                  FileModDate: '06-May-2017 04:34:09'
+                     FileSize: 65160
+                       Format: 'tif'
+                FormatVersion: []
+                        Width: 256
+                       Height: 256
+                     BitDepth: 8
+                    ColorType: 'grayscale'
+              FormatSignature: [73 73 42 0]
+                    ByteOrder: 'little-endian'
+               NewSubFileType: 0
+                BitsPerSample: 8
+                  Compression: 'PackBits'
+    PhotometricInterpretation: 'BlackIsZero'
+                 StripOffsets: [8 8196 16174 24342 32534 40612 48729 56729]
+              SamplesPerPixel: 1
+                 RowsPerStrip: 32
+              StripByteCounts: [8188 7978 8168 8192 8078 8117 8000 8176]
+                  XResolution: 72
+                  YResolution: 72
+               ResolutionUnit: 'Inch'
+                     Colormap: []
+          PlanarConfiguration: 'Chunky'
+                    TileWidth: []
+                   TileLength: []
+                  TileOffsets: []
+               TileByteCounts: []
+                  Orientation: 1
+                    FillOrder: 1
+             GrayResponseUnit: 0.0100
+               MaxSampleValue: 255
+               MinSampleValue: 0
+                 Thresholding: 1
+                       Offset: 64906
+
+</pre><pre class="codeinput"><span class="comment">%Charger une image dans la variable I</span>
+I = imread(<span class="string">'cameraman.tif'</span>);
+</pre><pre class="codeinput"><span class="comment">%Afficher des informations m?moire concernant la variable I</span>
+whos <span class="string">I</span>
+</pre><pre class="codeoutput">  Name        Size             Bytes  Class    Attributes
+
+  I         256x256            65536  uint8              
+
+</pre><pre class="codeinput"><span class="comment">%afficher l'image avec imshow</span>
+imshow(I)
+</pre><img vspace="5" hspace="5" src="TP1_11.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'image avec imtools</span>
+imtool(I)
+</pre><img vspace="5" hspace="5" src="TP1_12.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'histogramme des niveaux de gris de l'image originale</span>
+figure, imhist(I)
+</pre><img vspace="5" hspace="5" src="TP1_13.png" alt=""> <pre class="codeinput"><span class="comment">%Calculer l'histogramme ?galis? et l'afficher</span>
+I2 = histeq(I);
+figure,imshow(I2)
+</pre><img vspace="5" hspace="5" src="TP1_14.png" alt=""> <pre class="codeinput"><span class="comment">%afficher la nouvelle image dont l'histogramme a ?t? ?galis?</span>
+figure,imhist(I2)
+</pre><img vspace="5" hspace="5" src="TP1_15.png" alt=""> <pre class="codeinput"><span class="comment">%ecrire l'image dans un fichier externe</span>
+imwrite(I2, <span class="string">'cameraman2.png'</span>)
+</pre><pre class="codeinput"><span class="comment">%afficher les informations concernant l'image</span>
+imfinfo(<span class="string">'cameraman2.png'</span>)
+
+
+<span class="comment">%image cell.tif</span>
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                  Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\TIM...'
+               FileModDate: '06-May-2017 05:34:10'
+                  FileSize: 38595
+                    Format: 'png'
+             FormatVersion: []
+                     Width: 256
+                    Height: 256
+                  BitDepth: 8
+                 ColorType: 'grayscale'
+           FormatSignature: [137 80 78 71 13 10 26 10]
+                  Colormap: []
+                 Histogram: []
+             InterlaceType: 'none'
+              Transparency: 'none'
+    SimpleTransparencyData: []
+           BackgroundColor: []
+           RenderingIntent: []
+            Chromaticities: []
+                     Gamma: []
+               XResolution: []
+               YResolution: []
+            ResolutionUnit: []
+                   XOffset: []
+                   YOffset: []
+                OffsetUnit: []
+           SignificantBits: []
+              ImageModTime: '6 May 2017 04:34:10 +0000'
+                     Title: []
+                    Author: []
+               Description: []
+                 Copyright: []
+              CreationTime: []
+                  Software: []
+                Disclaimer: []
+                   Warning: []
+                    Source: []
+                   Comment: []
+                 OtherText: []
+
+</pre><pre class="codeinput"><span class="comment">%Charger une image dans la variable I</span>
+I = imread(<span class="string">'cell.tif'</span>);
+</pre><pre class="codeinput"><span class="comment">%Afficher des informations m?moire concernant la variable I</span>
+whos <span class="string">I</span>
+</pre><pre class="codeoutput">  Name        Size             Bytes  Class    Attributes
+
+  I         159x191            30369  uint8              
+
+</pre><pre class="codeinput"><span class="comment">%afficher l'image avec imshow</span>
+imshow(I)
+</pre><img vspace="5" hspace="5" src="TP1_16.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'image avec imtools</span>
+imtool(I)
+</pre><img vspace="5" hspace="5" src="TP1_17.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'histogramme des niveaux de gris de l'image originale</span>
+figure, imhist(I)
+</pre><img vspace="5" hspace="5" src="TP1_18.png" alt=""> <pre class="codeinput"><span class="comment">%Calculer l'histogramme ?galis? et l'afficher</span>
+I2 = histeq(I);
+figure,imshow(I2)
+</pre><img vspace="5" hspace="5" src="TP1_19.png" alt=""> <pre class="codeinput"><span class="comment">%afficher la nouvelle image dont l'histogramme a ?t? ?galis?</span>
+figure,imhist(I2)
+</pre><img vspace="5" hspace="5" src="TP1_20.png" alt=""> <pre class="codeinput"><span class="comment">%ecrire l'image dans un fichier externe</span>
+imwrite(I2, <span class="string">'cell.png'</span>)
+</pre><pre class="codeinput"><span class="comment">%afficher les informations concernant l'image</span>
+imfinfo(<span class="string">'cell.png'</span>)
+
+
+<span class="comment">%image circuit.tif</span>
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                  Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\TIM...'
+               FileModDate: '06-May-2017 05:34:12'
+                  FileSize: 21450
+                    Format: 'png'
+             FormatVersion: []
+                     Width: 191
+                    Height: 159
+                  BitDepth: 8
+                 ColorType: 'grayscale'
+           FormatSignature: [137 80 78 71 13 10 26 10]
+                  Colormap: []
+                 Histogram: []
+             InterlaceType: 'none'
+              Transparency: 'none'
+    SimpleTransparencyData: []
+           BackgroundColor: []
+           RenderingIntent: []
+            Chromaticities: []
+                     Gamma: []
+               XResolution: []
+               YResolution: []
+            ResolutionUnit: []
+                   XOffset: []
+                   YOffset: []
+                OffsetUnit: []
+           SignificantBits: []
+              ImageModTime: '6 May 2017 04:34:12 +0000'
+                     Title: []
+                    Author: []
+               Description: []
+                 Copyright: []
+              CreationTime: []
+                  Software: []
+                Disclaimer: []
+                   Warning: []
+                    Source: []
+                   Comment: []
+                 OtherText: []
+
+</pre><pre class="codeinput"><span class="comment">%Charger une image dans la variable I</span>
+I = imread(<span class="string">'circuit.tif'</span>);
+</pre><pre class="codeinput"><span class="comment">%Afficher des informations m?moire concernant la variable I</span>
+whos <span class="string">I</span>
+</pre><pre class="codeoutput">  Name        Size             Bytes  Class    Attributes
+
+  I         280x272            76160  uint8              
+
+</pre><pre class="codeinput"><span class="comment">%afficher l'image avec imshow</span>
+imshow(I)
+</pre><img vspace="5" hspace="5" src="TP1_21.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'image avec imtools</span>
+imtool(I)
+</pre><img vspace="5" hspace="5" src="TP1_22.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'histogramme des niveaux de gris de l'image originale</span>
+figure, imhist(I)
+</pre><img vspace="5" hspace="5" src="TP1_23.png" alt=""> <pre class="codeinput"><span class="comment">%Calculer l'histogramme ?galis? et l'afficher</span>
+I2 = histeq(I);
+figure,imshow(I2)
+</pre><img vspace="5" hspace="5" src="TP1_24.png" alt=""> <pre class="codeinput"><span class="comment">%afficher la nouvelle image dont l'histogramme a ?t? ?galis?</span>
+figure,imhist(I2)
+</pre><img vspace="5" hspace="5" src="TP1_25.png" alt=""> <pre class="codeinput"><span class="comment">%ecrire l'image dans un fichier externe</span>
+imwrite(I2, <span class="string">'circuit.png'</span>)
+</pre><pre class="codeinput"><span class="comment">%afficher les informations concernant l'image</span>
+imfinfo(<span class="string">'circuit.png'</span>)
+
+
+<span class="comment">%image rice.png</span>
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                  Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\TIM...'
+               FileModDate: '06-May-2017 05:34:14'
+                  FileSize: 31799
+                    Format: 'png'
+             FormatVersion: []
+                     Width: 272
+                    Height: 280
+                  BitDepth: 8
+                 ColorType: 'grayscale'
+           FormatSignature: [137 80 78 71 13 10 26 10]
+                  Colormap: []
+                 Histogram: []
+             InterlaceType: 'none'
+              Transparency: 'none'
+    SimpleTransparencyData: []
+           BackgroundColor: []
+           RenderingIntent: []
+            Chromaticities: []
+                     Gamma: []
+               XResolution: []
+               YResolution: []
+            ResolutionUnit: []
+                   XOffset: []
+                   YOffset: []
+                OffsetUnit: []
+           SignificantBits: []
+              ImageModTime: '6 May 2017 04:34:14 +0000'
+                     Title: []
+                    Author: []
+               Description: []
+                 Copyright: []
+              CreationTime: []
+                  Software: []
+                Disclaimer: []
+                   Warning: []
+                    Source: []
+                   Comment: []
+                 OtherText: []
+
+</pre><pre class="codeinput"><span class="comment">%Charger une image dans la variable I</span>
+I = imread(<span class="string">'moon.tif'</span>);
+</pre><pre class="codeinput"><span class="comment">%Afficher des informations m?moire concernant la variable I</span>
+whos <span class="string">I</span>
+</pre><pre class="codeoutput">  Name        Size              Bytes  Class    Attributes
+
+  I         537x358            192246  uint8              
+
+</pre><pre class="codeinput"><span class="comment">%afficher l'image avec imshow</span>
+imshow(I)
+</pre><img vspace="5" hspace="5" src="TP1_26.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'image avec imtools</span>
+imtool(I)
+</pre><img vspace="5" hspace="5" src="TP1_27.png" alt=""> <pre class="codeinput"><span class="comment">%afficher l'histogramme des niveaux de gris de l'image originale</span>
+figure, imhist(I)
+</pre><img vspace="5" hspace="5" src="TP1_28.png" alt=""> <pre class="codeinput"><span class="comment">%Calculer l'histogramme ?galis? et l'afficher</span>
+I2 = histeq(I);
+figure,imshow(I2)
+</pre><img vspace="5" hspace="5" src="TP1_29.png" alt=""> <pre class="codeinput"><span class="comment">%afficher la nouvelle image dont l'histogramme a ?t? ?galis?</span>
+figure,imhist(I2)
+</pre><img vspace="5" hspace="5" src="TP1_30.png" alt=""> <pre class="codeinput"><span class="comment">%ecrire l'image dans un fichier externe</span>
+imwrite(I2, <span class="string">'moon2.png'</span>)
+</pre><pre class="codeinput"><span class="comment">%afficher les informations concernant l'image</span>
+imfinfo(<span class="string">'moon2.png'</span>)
+</pre><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+                  Filename: 'C:\Users\pc\Desktop\master2\FINAL TIM FDD\TIM...'
+               FileModDate: '06-May-2017 05:34:16'
+                  FileSize: 124128
+                    Format: 'png'
+             FormatVersion: []
+                     Width: 358
+                    Height: 537
+                  BitDepth: 8
+                 ColorType: 'grayscale'
+           FormatSignature: [137 80 78 71 13 10 26 10]
+                  Colormap: []
+                 Histogram: []
+             InterlaceType: 'none'
+              Transparency: 'none'
+    SimpleTransparencyData: []
+           BackgroundColor: []
+           RenderingIntent: []
+            Chromaticities: []
+                     Gamma: []
+               XResolution: []
+               YResolution: []
+            ResolutionUnit: []
+                   XOffset: []
+                   YOffset: []
+                OffsetUnit: []
+           SignificantBits: []
+              ImageModTime: '6 May 2017 04:34:16 +0000'
+                     Title: []
+                    Author: []
+               Description: []
+                 Copyright: []
+              CreationTime: []
+                  Software: []
+                Disclaimer: []
+                   Warning: []
+                    Source: []
+                   Comment: []
+                 OtherText: []
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%%
+%Charger une image dans la variable I
+I = imread('pout.tif');
+%%
+%Afficher des informations m?moire concernant la variable I
+whos I
+%%
+%afficher l'image avec imshow
+imshow(I)
+%%
+%afficher l'image avec imtools
+imtool(I)
+%%
+%afficher l'histogramme des niveaux de gris de l'image originale
+figure, imhist(I)
+%%
+%Calculer l'histogramme ?galis? et l'afficher
+I2 = histeq(I);
+figure,imshow(I2)
+%%
+%afficher la nouvelle image dont l'histogramme a ?t? ?galis?
+figure,imhist(I2)
+%%
+%ecrire l'image dans un fichier externe
+imwrite(I2, 'pout2.png')
+%%
+%afficher les informations concernant l'image
+imfinfo('pout2.png')
+
+%image rice.png
+%%
+%Charger une image dans la variable I
+I = imread('rice.png');
+%%
+%Afficher des informations m?moire concernant la variable I
+whos I
+%%
+%afficher l'image avec imshow
+imshow(I)
+%%
+%afficher l'image avec imtools
+imtool(I)
+%%
+%afficher l'histogramme des niveaux de gris de l'image originale
+figure, imhist(I)
+%%
+%Calculer l'histogramme ?galis? et l'afficher
+I2 = histeq(I);
+figure,imshow(I2)
+%%
+%afficher la nouvelle image dont l'histogramme a ?t? ?galis?
+figure,imhist(I2)
+%%
+%ecrire l'image dans un fichier externe
+imwrite(I2, 'rice2.tif')
+%%
+%afficher les informations concernant l'image
+imfinfo('rice2.tif')
+
+%image cameraman.tif
+%%
+%Charger une image dans la variable I
+I = imread('cameraman.tif');
+%%
+%Afficher des informations m?moire concernant la variable I
+whos I
+%%
+%afficher l'image avec imshow
+imshow(I)
+%%
+%afficher l'image avec imtools
+imtool(I)
+%%
+%afficher l'histogramme des niveaux de gris de l'image originale
+figure, imhist(I)
+%%
+%Calculer l'histogramme ?galis? et l'afficher
+I2 = histeq(I);
+figure,imshow(I2)
+%%
+%afficher la nouvelle image dont l'histogramme a ?t? ?galis?
+figure,imhist(I2)
+%%
+%ecrire l'image dans un fichier externe
+imwrite(I2, 'cameraman2.png')
+%%
+%afficher les informations concernant l'image
+imfinfo('cameraman2.png')
+
+
+%image cell.tif
+%%
+%Charger une image dans la variable I
+I = imread('cell.tif');
+%%
+%Afficher des informations m?moire concernant la variable I
+whos I
+%%
+%afficher l'image avec imshow
+imshow(I)
+%%
+%afficher l'image avec imtools
+imtool(I)
+%%
+%afficher l'histogramme des niveaux de gris de l'image originale
+figure, imhist(I)
+%%
+%Calculer l'histogramme ?galis? et l'afficher
+I2 = histeq(I);
+figure,imshow(I2)
+%%
+%afficher la nouvelle image dont l'histogramme a ?t? ?galis?
+figure,imhist(I2)
+%%
+%ecrire l'image dans un fichier externe
+imwrite(I2, 'cell.png')
+%%
+%afficher les informations concernant l'image
+imfinfo('cell.png')
+
+
+%image circuit.tif
+%%
+%Charger une image dans la variable I
+I = imread('circuit.tif');
+%%
+%Afficher des informations m?moire concernant la variable I
+whos I
+%%
+%afficher l'image avec imshow
+imshow(I)
+%%
+%afficher l'image avec imtools
+imtool(I)
+%%
+%afficher l'histogramme des niveaux de gris de l'image originale
+figure, imhist(I)
+%%
+%Calculer l'histogramme ?galis? et l'afficher
+I2 = histeq(I);
+figure,imshow(I2)
+%%
+%afficher la nouvelle image dont l'histogramme a ?t? ?galis?
+figure,imhist(I2)
+%%
+%ecrire l'image dans un fichier externe
+imwrite(I2, 'circuit.png')
+%%
+%afficher les informations concernant l'image
+imfinfo('circuit.png')
+
+
+%image rice.png
+%%
+%Charger une image dans la variable I
+I = imread('moon.tif');
+%%
+%Afficher des informations m?moire concernant la variable I
+whos I
+%%
+%afficher l'image avec imshow
+imshow(I)
+%%
+%afficher l'image avec imtools
+imtool(I)
+%%
+%afficher l'histogramme des niveaux de gris de l'image originale
+figure, imhist(I)
+%%
+%Calculer l'histogramme ?galis? et l'afficher
+I2 = histeq(I);
+figure,imshow(I2)
+%%
+%afficher la nouvelle image dont l'histogramme a ?t? ?galis?
+figure,imhist(I2)
+%%
+%ecrire l'image dans un fichier externe
+imwrite(I2, 'moon2.png')
+%%
+%afficher les informations concernant l'image
+imfinfo('moon2.png')
+
+##### SOURCE END #####
+--></body></html>
